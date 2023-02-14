@@ -287,7 +287,7 @@ int main()
 	//cout << C << endl;
 	Fraction D;
 	cout << "Enter the number: "; cin >> D;
-	cout << D;
+	cout<<D;
 
 }
 
