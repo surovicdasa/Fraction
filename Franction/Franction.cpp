@@ -53,6 +53,8 @@ public:
 		decimal -= integer;
 		this->denominator = 1e+9;
 		this->numerator = decimal * denominator;
+		reduce();
+		cout << "DConstructor:\t\t" << this << endl;
 	}
 	Fraction(int integer)
 	{
@@ -89,6 +91,13 @@ public:
 		cout << "Destructor\t" << this << endl;
 	}
 	// Operators:
+	Fraction& operator()(int integer, int numerator, int denominator)
+	{
+		set_integer(integer);
+		set_numerator(numerator);
+		set_denominator(denominator);
+		return *this;
+	}
 	Fraction& operator=(const Fraction& other)
 	{
 		this->integer = other.integer;
@@ -151,17 +160,18 @@ public:
 		denominator /= GCD;
 		return *this;
 	}
-	void print()const
+	std::ostream& print(std::ostream& os )const
 	{
-		if (integer)cout << integer;
+		if (integer)os << integer;
 		if (numerator)
 		{
-			if (integer)cout << "(";
-			cout << numerator << "/" << denominator;
-			if (integer)cout << ")";
+			if (integer)os << "(";
+			os << numerator << "/" << denominator;
+			if (integer)os << ")";
 		}
-		else if (integer == 0)cout << 0;
-		cout << endl;
+		else if (integer == 0)os << 0;
+		os << endl;
+		return os;
 
 	}
 };
@@ -227,6 +237,23 @@ bool operator<=(const Fraction& left, const Fraction& right)
 {
 	return left < right || left == right;
 }
+std::ostream& operator<<(std::ostream& os, const Fraction& obj)
+{
+	return obj.print(os);
+}
+std::istream& operator>>(std::istream& is, Fraction& obj)
+{
+	int integer;
+	int numerator;
+	int denominator;
+	is >> integer;
+	is >> numerator;
+	is >> denominator;
+	obj(integer, numerator, denominator);
+	return is;
+	
+}
+
 int main()
 {
 	/*Fraction A;
@@ -255,8 +282,12 @@ int main()
 	Fraction B(2, 3, 4);
 	double b = (double)B;
 	cout << b << endl;
-	Fraction C = 2, 75;
+	Fraction C = 2.75;
 	cout << C << endl;
+	//cout << C << endl;
+	Fraction D;
+	cout << "Enter the number: "; cin >> D;
+	cout << D;
 
 }
 
